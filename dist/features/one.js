@@ -47,7 +47,7 @@ function renderOne(){
  const artists=playgroundArtists.slice(0,2).filter(playgroundMatches);
  const stories=playgroundStories.slice(0,3).filter(playgroundMatches);
  const slides=[
- {rank:1,name:'그림자 던전',terms:'나 혼자만 레벨업 그림자 던전 플레이',art:'solo',image:'assets/official/solo-leveling.jpg',alt:'나 혼자만 레벨업 성진우 공식 이미지',action:'quest',id:'solo',cta:'던전 플레이'},
+ {rank:1,name:'그림자 레이드 60',terms:'나 혼자만 레벨업 그림자 던전 레이드 60 Solo Leveling Shadow Raid 플레이',art:'solo',image:'assets/official/solo-leveling.jpg',alt:'나 혼자만 레벨업 성진우 공식 이미지',action:'shadow-raid',cta:'60초 도전 · 1인 플레이'},
  {rank:2,name:'무궁화 생존방',terms:'무궁화 생존방 오징어 게임 Squid Game 오픈채팅',art:'squid',image:'assets/official/squid-game.jpg',alt:'오징어 게임 공식 이미지',action:'squid-room',cta:'게임방 입장'},
  {rank:3,name:playgroundArtists[0].title,terms:`${playgroundArtists[0].title} IVE 아이브`,art:'artist',image:'assets/official/playground/ive-secret.jpg',alt:'IVE 공식 사진',action:'one-preview',category:'artist',cta:'게임 보기'}
  ].filter(a=>matchText(a.terms)).map(a=>({...a,html:`<section class="hub-feature ranked-hero" aria-label="${a.rank}위 ${esc(a.name)}"><div class="ranked-hero-art ${a.art}"><img src="${a.image}" alt="${a.alt}"></div><div class="hub-feature-shade"></div><strong class="hero-rank" aria-label="${a.rank}위">${a.rank}</strong><div class="hub-feature-copy"><h2>${esc(a.name)}</h2><div class="hub-feature-actions"><button data-action="${a.action}" ${a.id?`data-id="${a.id}"`:''} ${a.category?`data-category="${a.category}" data-title="${esc(a.name)}"`:''}>${icon('start')} ${a.cta}</button></div></div></section>`}));
