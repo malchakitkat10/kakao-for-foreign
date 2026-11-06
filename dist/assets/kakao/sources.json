@@ -1,0 +1,172 @@
+[
+  {
+    "file": "talk-icon.png",
+    "source": "kakaotalk-mac-reference/app-icon/AppIcon.png",
+    "sha256": "fd474b45ea425e2e7593fe177ff8ff9de10fc83067248d740657722c48c6e67a",
+    "dimensions": [
+      256,
+      256
+    ]
+  },
+  {
+    "file": "talk-share.svg",
+    "source": "kakaotalk-assets/02-official-share-buttons/Kakao Talk Sharing/medium/SVG/kakaotalk_sharing_btn_medium.svg",
+    "sha256": "2d9affd8e0e52b7977fe58f3869ac61a989cf141320774ae92b7a522b21df666"
+  },
+  {
+    "file": "talk-share-small.svg",
+    "source": "kakaotalk-assets/02-official-share-buttons/Kakao Talk Sharing/small/SVG/kakaotalk_sharing_btn_small.svg",
+    "sha256": "50da321346429f056fec55cef12f398eeb5571ca9c5551f921ce12cba8760b72"
+  },
+  {
+    "file": "apeach-profile.png",
+    "source": "kakaotalk-assets/01-official-theme/ios/Images/profileImg01@3x.png",
+    "sha256": "f316a825445055f010b9dbb2b9f4ce79f0b5a26d242187c170a3171a851bbcf8",
+    "dimensions": [
+      360,
+      360
+    ]
+  },
+  {
+    "file": "apeach-chat-bg.png",
+    "source": "kakaotalk-assets/01-official-theme/ios/Images/chatroomBgImage@3x.png",
+    "sha256": "50497121b515f96c9eba914bdfe9d57635826a22d381070bfd8d654fe64ba973",
+    "dimensions": [
+      1125,
+      2250
+    ]
+  },
+  {
+    "file": "apeach-flower-bg.png",
+    "source": "kakaotalk-assets/01-official-theme/ios/Images/passcodeBgImage@3x.png",
+    "sha256": "9fb0551468135d344c8d1f001cb176afa55766147d86047a495afe78b31a6da2",
+    "dimensions": [
+      1200,
+      1200
+    ]
+  },
+  {
+    "file": "apeach-splash.png",
+    "source": "kakaotalk-assets/01-official-theme/android/src/main/theme/drawable-land-xxhdpi/theme_splash_image.png",
+    "sha256": "04228183d0d7c79019cac70ffeec266f630047ac09c3ac481f16e0e5acdc029f",
+    "dimensions": [
+      2560,
+      1440
+    ]
+  },
+  {
+    "file": "bubble-receive.png",
+    "source": "kakaotalk-assets/01-official-theme/ios/Images/chatroomBubbleReceive01@3x.png",
+    "sha256": "937d1365d61ac6d71e1038284655a5d3d251a2f2a0f76771706e6211497a8440",
+    "dimensions": [
+      120,
+      105
+    ]
+  },
+  {
+    "file": "bubble-send.png",
+    "source": "kakaotalk-assets/01-official-theme/ios/Images/chatroomBubbleSend01@3x.png",
+    "sha256": "dd03ccaf0a6fc32e1e2d8fc057d64f51e79a2e7018bedb70c3c374561b74acbf",
+    "dimensions": [
+      120,
+      105
+    ]
+  },
+  {
+    "file": "friends.png",
+    "source": "kakaotalk-assets/01-official-theme/android/src/main/theme/drawable-sw600dp-xxxhdpi/theme_maintab_ico_friends_focused_image.png",
+    "sha256": "f1db4e627f74cd0345e33c2162ec66d75958f8c568cea85333542549820f2c9e",
+    "dimensions": [
+      152,
+      152
+    ]
+  },
+  {
+    "file": "chats.png",
+    "source": "kakaotalk-assets/01-official-theme/android/src/main/theme/drawable-sw600dp-xxxhdpi/theme_maintab_ico_chats_focused_image.png",
+    "sha256": "c59c0868fac08d80deea4cab500676ca617a8bcfe6fefb83e61e49b1d0e41adc",
+    "dimensions": [
+      152,
+      152
+    ]
+  },
+  {
+    "file": "local.png",
+    "source": "kakaotalk-assets/01-official-theme/android/src/main/theme/drawable-sw600dp-xxxhdpi/theme_maintab_ico_local_focused_image.png",
+    "sha256": "ef528362f5496b35993a3cd59ad5da056a62d7645b7e4dbdc80c469d7b2e96ab",
+    "dimensions": [
+      152,
+      152
+    ]
+  },
+  {
+    "file": "more.png",
+    "source": "kakaotalk-assets/01-official-theme/android/src/main/theme/drawable-sw600dp-xxxhdpi/theme_maintab_ico_more_focused_image.png",
+    "sha256": "a911f83a223f8bfce9a31c2668918136b7760e38c43103b528174aeccea18c7c",
+    "dimensions": [
+      152,
+      152
+    ]
+  },
+  {
+    "file": "icon-chat.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_on_chat_selected.svg",
+    "sha256": "ad27a5132065248742287d583bef210017a701d1f4227b99aa1663abbb70220e"
+  },
+  {
+    "file": "icon-friends.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_on_friends_selected.svg",
+    "sha256": "86678cd59d54d02844dc112f951c2ca3be1f1d3e0b05a67f54438608395e4189"
+  },
+  {
+    "file": "icon-search.png",
+    "source": "kakaotalk-mac-reference/chat-header/chatroom_header_btn_search_default@2x.png",
+    "sha256": "d900843882eee18deb5f54a36c5dd67f000e87f5c159f628a548bd9ab12ec5c5",
+    "dimensions": [
+      60,
+      60
+    ]
+  },
+  {
+    "file": "icon-plus.svg",
+    "source": "kakaotalk-mac-reference/chat-input/chatroom_input_btn_more_normal.svg",
+    "sha256": "633755a98389aeb5301232f66d1af34d05489bbaf6df2f8e787b930bfa8b9ce1"
+  },
+  {
+    "file": "icon-file.svg",
+    "source": "kakaotalk-mac-reference/chat-input/chatroom_input_btn_file.svg",
+    "sha256": "90da618ec8abd4c1d30aa4ceca414a06b243f0b5b5f75a78fc85a9e43228c203"
+  },
+  {
+    "file": "icon-emoticon.svg",
+    "source": "kakaotalk-mac-reference/chat-input/chatroom_input_btn_emoticon.svg",
+    "sha256": "d3336c33f7fe92da3eda696bd3f026d7d35703a872d5116f0ab35390e4144917"
+  },
+  {
+    "file": "profile-1.png",
+    "source": "kakaotalk-mac-reference/profiles-and-replies/profile_default_person_no1@2x.png",
+    "sha256": "eb48e735d8ccb599f7a6383ff77d7655558c22c41a33ca63faea2f7724a59c40",
+    "dimensions": [
+      640,
+      640
+    ]
+  },
+  {
+    "file": "profile-2.png",
+    "source": "kakaotalk-mac-reference/profiles-and-replies/profile_default_person_no2@2x.png",
+    "sha256": "09f8c412528292ce6757d31a40ea7ea20e5f11149a31ca99b50614b8fe88ae99",
+    "dimensions": [
+      640,
+      640
+    ]
+  },
+  {
+    "file": "profile-3.png",
+    "source": "kakaotalk-mac-reference/profiles-and-replies/profile_default_person_no3@2x.png",
+    "sha256": "d40dfde65a18c5936ad07429e2fcdd6d3d677d1a4388b35175d3fc680f847650",
+    "dimensions": [
+      640,
+      640
+    ]
+  }
+]
