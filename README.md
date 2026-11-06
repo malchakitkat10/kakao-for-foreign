@@ -31,6 +31,7 @@ Playground 홈: http://localhost:4173/#one
 | --- | --- | --- |
 | Playground 홈·인기순위 배너·메뉴 | `dist/features/one.js` | `dist/one-editorial.css` |
 | 창작마당 콘텐츠 | `dist/features/playground.js` | `dist/playground.css` |
+| 그림자 레이드 60 · 실시간 1인 전투 | `dist/features/shadow-raid-engine.js`, `dist/features/shadow-raid.js` | `dist/shadow-raid.css` |
 | 에셋 팩·무엇을 만들까요·초안 편집 | `dist/features/studio.js` | `dist/studio.css` |
 | 친구·채팅 | `dist/features/friends.js`, `dist/features/chats.js` | `dist/reference-design.css` |
 | 채팅 입력 | `dist/features/chat-input.js` | `dist/chat-input.css` |
@@ -47,6 +48,18 @@ Playground 홈: http://localhost:4173/#one
 ## 확인과 배포
 
 JavaScript 수정 후 `node --check 수정한파일.js`로 문법을 확인하고 로컬 브라우저에서 해당 화면을 확인합니다. 공통 파일을 수정했다면 친구·채팅 화면도 확인합니다.
+
+### 그림자 레이드 60
+
+Playground 홈 첫 배너 또는 창작마당 상단의 **그림자 레이드 60**에서 실행합니다. 기존 나 혼자만 레벨업 이미지를 사용한 팬메이드 1인 액션 게임입니다. 60초 안에 공격·회피·그림자 소환으로 던전 코어를 파괴합니다. 버튼, `A / D / S` 키, 채팅 명령 `공격 / 회피 / 소환` 또는 `attack / dodge / summon`을 지원합니다. 시작 안내에서 한국어·영어를 전환할 수 있습니다.
+
+회피 성공 시 반격 보너스를 얻고, 결과에서 같은 던전 재도전·새 던전·도전 링크 복사가 가능합니다. 같은 던전의 최고 클리어 시간은 해당 브라우저에만 저장합니다. 도전 링크는 같은 공격 패턴으로 **각자 플레이**하는 링크입니다. 실시간 멀티플레이, 서버 순위, 카카오톡 메시지 전송은 구현하지 않았습니다. 창작 도구의 기존 성격 테스트와는 별도 플레이어입니다.
+
+```sh
+node --test tests/shadow-raid.test.cjs
+```
+
+테스트도 추가 패키지 설치 없이 실행합니다. 게임 규칙, 변경 파일, 검증 결과는 [구현·검증 기록](docs/shadow-raid.md)에 있습니다.
 
 GitHub 커밋과 사이트 배포는 별도입니다. 이 저장소에 커밋해도 기존 Sites 사이트가 자동으로 갱신되지는 않습니다. `.openai/hosting.json`에는 기존 배포 식별자가 보관되어 있습니다.
 

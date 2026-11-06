@@ -49,7 +49,7 @@ const storyFanGames=[
 }));
 function playgroundMatches(item){return matchText(`${item.title} ${item.ipTitle} ${item.keywords||''} ${item.genre} ${item.creator}`);}
 function playgroundPreview(item){
- return `<article class="pg-preview"><div class="pg-photo ${item.kind}"><img src="assets/official/playground/${item.file}" alt="${esc(item.ipTitle)} 공식 ${item.kind==='page'?'작품 표지':'사진'}" loading="lazy"></div><h3>${esc(item.title)}</h3><p>${esc(item.subtitle)}</p></article>`;
+ return `<article class="pg-preview"><div class="pg-photo ${item.kind}"><img src="assets/official/playground/${item.file}" alt="${esc(item.ipTitle)} 공식 ${item.kind==='page'?'작품 표지':'사진'}" loading="lazy"><span class="pg-preview-label">미리보기</span></div><h3>${esc(item.title)}</h3><p>${esc(item.subtitle)}</p></article>`;
 }
 function playgroundOwnCard(item){
  return `<button class="pg-own-card" data-action="open-creation" data-id="${esc(item.id)}"><strong>${esc(item.title)}</strong><span>${esc((formats[item.format]||formats.game).short)}</span></button>`;
@@ -61,15 +61,17 @@ function renderPlayground(){
  const own=data.creations.filter(item=>matchText(item.title));
  const showArtists=playgroundCategory!=='page'&&artists.length;
  const showStories=playgroundCategory!=='artist'&&stories.length;
+ const showRaid=playgroundCategory!=='artist'&&matchText('그림자 레이드 60 나 혼자만 레벨업 Solo Leveling Shadow Raid 액션 전투');
  return `<div class="pg-page">
   <nav class="pg-tabs" aria-label="창작마당 메뉴"><button data-action="pg-tab" data-id="discover" class="${isOwn?'':'selected'}" aria-pressed="${!isOwn}">둘러보기</button><button data-action="pg-tab" data-id="mine" class="${isOwn?'selected':''}" aria-pressed="${isOwn}">내 창작물${data.creations.length?` <span>${data.creations.length}</span>`:''}</button><button class="pg-create" data-action="create">만들기</button></nav>
-  ${isOwn?'':`<nav class="pg-filters" aria-label="콘텐츠 분류">${[['all','전체'],['artist','아티스트'],['page','카카오페이지']].map(([id,title])=>`<button data-action="pg-category" data-id="${id}" class="${playgroundCategory===id?'selected':''}" aria-pressed="${playgroundCategory===id}">${title}</button>`).join('')}<span>미리보기</span></nav>`}
+  ${isOwn?'':`<nav class="pg-filters" aria-label="콘텐츠 분류">${[['all','전체'],['artist','아티스트'],['page','카카오페이지']].map(([id,title])=>`<button data-action="pg-category" data-id="${id}" class="${playgroundCategory===id?'selected':''}" aria-pressed="${playgroundCategory===id}">${title}</button>`).join('')}<span>팬메이드</span></nav>`}
   <div class="pg-scroll">
   ${isOwn?`<div class="pg-own-list">${own.map(playgroundOwnCard).join('')}</div>${!own.length?`<p class="pg-empty">${searchQuery?'검색 결과가 없습니다.':'아직 만든 콘텐츠가 없습니다.'}</p>`:''}`:`
+   ${showRaid?`<button type="button" class="pg-raid" data-action="shadow-raid"><span class="pg-raid-art"><span class="sr-art" aria-hidden="true"></span></span><span class="pg-raid-copy"><small>지금 플레이 · 1인 액션</small><strong>그림자 레이드 60</strong><span class="pg-raid-line">공격 · 회피 · 소환, 60초 안에 클리어<br>나 혼자만 레벨업 · KR / EN</span></span><b aria-hidden="true">↗</b></button>`:''}
    ${showArtists?`<section class="pg-section"><h2>아티스트 팬게임</h2><div class="pg-artists ${playgroundCategory==='all'&&!searchQuery?'pg-strip':''}">${artists.map(playgroundPreview).join('')}</div></section>`:''}
    ${showStories?`<section class="pg-section"><h2>웹툰·웹소설 팬게임</h2><div class="pg-covers">${stories.map(playgroundPreview).join('')}</div></section>`:''}
-   ${!showArtists&&!showStories?'<p class="pg-empty">검색 결과가 없습니다.</p>':''}
-   ${playgroundCategory==='all'&&!searchQuery?`<section class="pg-section"><h2>지금 플레이</h2><div class="pg-live-grid"><button class="pg-preview" data-action="sample-game" data-id="solo-quest"><span class="pg-photo solo"><img src="assets/official/solo-leveling.jpg" alt="나 혼자만 레벨업 성진우 공식 이미지" loading="lazy"></span><strong>그림자 던전</strong><span class="pg-caption">나 혼자만 레벨업 · 미니게임</span></button><button class="pg-preview" data-action="squid-room"><span class="pg-photo squid"><img src="assets/official/squid-game.jpg" alt="오징어 게임 공식 이미지" loading="lazy"></span><strong>무궁화 생존방</strong><span class="pg-caption">오픈채팅 · 20명</span></button></div></section>`:''}`}
+   ${!showArtists&&!showStories&&!showRaid?'<p class="pg-empty">검색 결과가 없습니다.</p>':''}
+   ${playgroundCategory==='all'&&!searchQuery?`<section class="pg-section"><h2>지금 플레이</h2><div class="pg-live-grid"><button class="pg-preview" data-action="sample-game" data-id="solo-quest"><span class="pg-photo solo"><img src="assets/official/solo-leveling.jpg" alt="나 혼자만 레벨업 성진우 공식 이미지" loading="lazy"></span><strong>그림자 던전</strong><span class="pg-caption">나 혼자만 레벨업 · 미니게임</span></button><button class="pg-preview" data-action="squid-room"><span class="pg-photo squid"><img src="assets/official/squid-game.jpg" alt="오징어 게임 공식 이미지" loading="lazy"></span><strong>무궁화 생존방</strong><span class="pg-caption">오픈채팅 · 시연용</span></button></div></section>`:''}`}
   </div>
  </div>`;
 }
