@@ -1,0 +1,16 @@
+/* Kakao official OpenChat entry screenshot: f66ee88e018800001.png.
+   Scope ends at room entry; the approved channel interior is unchanged. */
+.native-openchat{height:100%;overflow-y:auto;background:#fff;color:#191919;padding:8px 0 24px}
+.native-open-search{display:flex;align-items:center;gap:10px;min-height:46px;width:calc(100% - 36px);margin:0 18px 18px;padding:12px 14px;background:#f5f5f5;border-radius:6px;text-align:left;color:#a0a0a0;font-size:14px}
+.native-open-search .icon{width:18px;height:18px;opacity:.9}.native-open-search span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.native-open-tabs{display:flex;gap:8px;padding:0 18px 18px;overflow-x:auto;scrollbar-width:none}
+.native-open-tabs button{flex:none;min-height:39px;padding:8px 12px;background:#fff;border:1px solid #e9e9e9;border-radius:22px;font-size:13px;color:#777;white-space:nowrap}
+.native-open-tabs button:last-child{color:#649acc}.native-open-tabs button.selected{background:#191919;border-color:#191919;color:#fff;font-weight:600}
+.native-open-rooms{padding-bottom:20px}.native-open-row{width:100%;display:flex;align-items:center;gap:12px;min-height:82px;padding:13px 18px;background:#fff;text-align:left}.native-open-row:hover{background:#f7f7f7}
+.native-open-avatar{width:54px;height:54px;flex:none;object-fit:cover;border-radius:20px;background:#f3f3f3}
+.native-open-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}.native-open-copy strong{display:flex;align-items:center;gap:4px;font-size:15px;line-height:1.35;font-weight:500;min-width:0}.native-open-copy strong>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.native-open-copy strong .icon{width:16px;height:16px;opacity:.7}
+.native-open-preview{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#999;font-size:13px;line-height:1.4}.native-open-meta{align-self:flex-start;padding-top:7px;flex:none;color:#aaa;font-size:10px;max-width:65px}.native-open-profile{border-top:8px solid #f5f5f5;padding-top:22px}.native-open-profile h2{font-size:16px;font-weight:600;padding:0 18px 8px}.native-open-profile .native-open-row>.icon{width:17px;color:#aaa}
+body.openchat-entry .app-header{border-bottom:0}body.openchat-entry .app-header h1{font-size:23px;color:#191919}
+@media(max-width:360px){.native-open-row{gap:10px;padding-left:16px;padding-right:16px}.native-open-avatar{width:48px;height:48px}.native-open-copy strong{font-size:14px}.native-open-meta{font-size:9px}.native-open-tabs{gap:6px;padding-left:16px;padding-right:16px}.native-open-tabs button{padding-left:10px;padding-right:10px;font-size:12px}}
+
+body.openchat-entry:has(#search-panel:not([hidden])) .native-open-search{display:none}.native-open-profile h2>span{margin-left:5px;color:#aaa;font-weight:400}

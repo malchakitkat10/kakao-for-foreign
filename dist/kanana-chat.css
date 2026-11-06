@@ -1,0 +1,11 @@
+/* Kanana uses the same room, message, notice and source input components as Chats. */
+.kanana-chat-open .app-header,.kanana-chat-open .bottom-nav,.kanana-chat-open .search-panel{display:none!important}
+.kanana-chat-open .app-body{padding-bottom:0}.kanana-chat-open #content{min-height:0;overflow:hidden;padding:0}
+.kanana-official-avatar{object-fit:contain!important;background:white;padding:3px}
+.one-service-logo .kanana-official-avatar{width:100%;height:100%;border-radius:12px;padding:5px}
+.kanana-room .back-button{display:inline-flex}.kanana-room .conversation{width:100%}
+.kanana-replies{margin-top:-8px;margin-bottom:16px;padding-left:41px}
+.kanana-room .source-input-circle[data-action=kn-room-attach] img{width:20px;height:20px}
+.kanana-replies>button:focus-visible{outline:2px solid #5b7585;outline-offset:2px}
+.kanana-room .messages{scroll-behavior:auto}
+.kanana-chat-open .source-input-circle[hidden],.kanana-chat-open .room-inline-search[hidden]{display:none!important}

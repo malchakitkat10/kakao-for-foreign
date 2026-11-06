@@ -1,0 +1,6 @@
+{
+  "archive": "kakaotalk-assets.zip",
+  "source": "kakaotalk-assets/03-katok-ui/components/ui/kakao/notice-banner.tsx",
+  "source_sha256": "10bcb08e5aa4d371f539e07f653229a6eca97ef69db6950b7d40932cdd072fb6",
+  "adaptation": "React markup and Tailwind utilities translated to scoped HTML/CSS; megaphone paths unchanged; title and click action preserve current room content."
+}

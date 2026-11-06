@@ -26,10 +26,15 @@ const iconPaths = {
   book:'<path d="M5 3h14v18H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 14h14M7 7h8m-8 4h5"/>',
   clock:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>'
 };
-const kakaoIcons = {search:'icon-search.png',rooms:'icon-chat.svg',people:'icon-friends.svg',plus:'icon-plus.svg'};
+const kakaoIcons = {openchat:'icon-openchat-selected.svg',search:'icon-search.png',settings:'icon-settings.png',addChat:'icon-add-chat.svg',rooms:'icon-chat.svg',people:'icon-friends.svg',plus:'icon-plus.svg'};
 const icon = (name) => kakaoIcons[name]
   ? `<img class="icon asset-icon" src="assets/kakao/${kakaoIcons[name]}" alt="" aria-hidden="true">`
   : `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name] || iconPaths.spark}</svg>`;
+// Use the native idle/selected assets; their own opacity is part of the artwork.
+const navigationIcon = (name, selected) => {
+  const assets = {openchat:['icon-openchat-idle.svg','icon-openchat-selected.svg'], people:['icon-friends-idle.svg','icon-friends.svg'], rooms:['icon-chat-idle.svg','icon-chat.svg'], more:['icon-more-idle.svg','icon-more-selected.svg']};
+  return assets[name] ? `<img class="icon asset-icon native-nav-icon" src="assets/kakao/${assets[name][selected?1:0]}" alt="" aria-hidden="true">` : icon(name);
+};
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
 Object.assign(iconPaths, {
@@ -39,12 +44,13 @@ Object.assign(iconPaths, {
   palette:'<path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 0-4h-1a2 2 0 0 1 0-4h5a4 4 0 0 0 4-4c0-3-4-6-9-6Z"/><path d="M7 8h.1M11 6h.1M16 7h.1M5 12h.1"/>'
 });
 const navItems = [
-  {id:'explore',title:'발견',icon:'explore'},
-  {id:'playground',title:'창작마당',icon:'play'},
-  {id:'learn',title:'한국어',icon:'learn'},
-  {id:'visit',title:'한국여행',icon:'visit'},
-  {id:'rooms',title:'채팅',icon:'rooms'}
+  {id:'friends',title:'친구',icon:'people'}, {id:'rooms',title:'채팅',icon:'rooms'},
+  {id:'openchat',title:'오픈채팅',icon:'openchat'}, {id:'one',title:'Playground',icon:'one'},
+  {id:'more',title:'더보기',icon:'more'},
+  {id:'playground',title:'창작마당',icon:'play'}, {id:'learn',title:'한국어 학습',icon:'learn'},
+  {id:'explore',title:'콘텐츠',icon:'explore'}, {id:'visit',title:'한국여행',icon:'visit'}, {id:'studio',title:'만들기',icon:'plus'}
 ];
+Object.assign(iconPaths, {one:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>', openchat:'<path d="M20 11a8 8 0 0 1-8 8H7l-4 3 1-6a8 8 0 1 1 16-5Z"/><path d="m10 7 5 4-5 4Z"/>', gift:'<rect x="4" y="9" width="16" height="12" rx="2"/><path d="M12 9v12M3 9h18M12 9S3 8 6 3c3-3 6 6 6 6s9-1 6-6c-3-3-6 6-6 6Z"/>'});
 const kindLabels = {Characters:'캐릭터',Stories:'웹툰',Culture:'한국문화'};
 const storageKey = 'kakao-world-concept-v1';
 const initialData = {savedWorlds:[],completedLessons:[],completedQuest:false,creations:[],joinedRooms:[],messages:[],trip:[],chatTheme:'classic'};
@@ -59,20 +65,21 @@ try {
   }
 } catch (_) {}
 if (!['classic','apeach'].includes(data.chatTheme)) data.chatTheme = 'classic';
-let view = navItems.some(n=>n.id===location.hash.slice(1)) ? location.hash.slice(1) : 'explore';
+let view = navItems.some(n=>n.id===location.hash.slice(1)) ? location.hash.slice(1) : 'rooms';
 let activeWorld = 'friends';
-let activeRoom = new URL(location.href).searchParams.get('room') || 'cafe';
-if (!roomData.some(r=>r.id===activeRoom)) activeRoom='cafe';
+let activeRoom = new URL(location.href).searchParams.get('room') || 'kanana';
+if (!roomData.some(r=>r.id===activeRoom)) activeRoom='kanana';
 let roomOpen = view==='rooms' && new URL(location.href).searchParams.has('room');
 let worldFilter='All', playFilter='All', visitFilter='all', searchQuery='';
 let learning={lesson:'first',step:0,replies:[]};
+let learningOpen=false;
 let quest=null, creator=null, storyStep=0, lastFocused=null, toastTimer;
 const content=document.getElementById('content');
 const modal=document.getElementById('modal');
 const search=document.getElementById('search');
 const getWorld=id=>worlds.find(w=>w.id===id)||worlds[2];
 const money=amount=>Number(amount).toLocaleString('ko-KR')+'원';
-const isPhone=()=>window.matchMedia('(max-width:900px)').matches;
+const isPhone=()=>true;
 const matchText=text=>!searchQuery||String(text).toLowerCase().includes(searchQuery.toLowerCase());
 const button=(label,action,id='',style='secondary')=>`<button type="button" class="button ${style}" data-action="${action}" ${id?`data-id="${esc(id)}"`:''}>${label}</button>`;
 function persist(){try{localStorage.setItem(storageKey,JSON.stringify(data));return true;}catch(_){return false;}}
@@ -84,13 +91,20 @@ function avatar(id,size=''){
 function sectionTitle(title,count=''){return `<div class="section-title"><h2>${title}</h2>${count!==''?`<span>${count}</span>`:''}</div>`;}
 function empty(text){return `<div class="empty-state"><p>${text}</p></div>`;}
 function updateNavigation(){
-  const nav=navItems.map(n=>`<a class="nav-link ${view===n.id?'active':''}" href="#${n.id}" data-view="${n.id}" ${view===n.id?'aria-current="page"':''}>${icon(n.icon)}<span>${n.title}</span></a>`).join('');
+  document.body.classList.toggle('kiwi-room-open', view==='openchat' && communityOpen && community==='squid');
+  const inner=['playground','learn','visit','studio'].includes(view);
+  const nav=navItems.slice(0,5).map(n=>`<a class="nav-link ${(view===n.id||(inner&&n.id==='one'))?'active':''}" href="#${n.id}" data-view="${n.id}" ${(view===n.id||(inner&&n.id==='one'))?'aria-current="page"':''}>${navigationIcon(n.icon,view===n.id||(inner&&n.id==='one'))}<span>${n.title}</span></a>`).join('');
   document.getElementById('desktop-nav').innerHTML=nav;
   document.getElementById('mobile-nav').innerHTML=nav;
-  document.getElementById('view-title').textContent=navItems.find(n=>n.id===view).title;
-  document.getElementById('header-create').setAttribute('aria-label',view==='rooms'?'채팅방 찾기':'콘텐츠 만들기');
+  document.getElementById('view-title').innerHTML=view==='friends'?'친구':inner?`<button class="icon-button" data-view="one" aria-label="Playground 홈으로 돌아가기">${icon('back')}</button>${navItems.find(n=>n.id===view).title}`:view==='one'?'Playground':navItems.find(n=>n.id===view).title;
+  document.body.dataset.view=view;
+  document.body.classList.toggle('openchat-entry',view==='openchat'&&!communityOpen);
   document.body.classList.toggle('has-open-room',view==='rooms'&&roomOpen);
-  search.placeholder={explore:'콘텐츠 검색',playground:'창작물 검색',learn:'학습 주제 검색',visit:'체험 검색',rooms:'채팅방 검색'}[view];
+  document.getElementById('hub-menu-button').hidden=view!=='one';
+  document.getElementById('header-create').hidden=['friends','one','more','openchat','learn','studio'].includes(view);
+  document.getElementById('header-create').innerHTML=icon(view==='rooms'?'addChat':'plus');
+  document.getElementById('header-create').setAttribute('aria-label',view==='rooms'?'채팅방 추가':'콘텐츠 만들기');
+  search.placeholder={friends:'친구 검색',one:'팬게임 검색',playground:'창작물 검색',learn:'학습 주제 검색',rooms:'채팅방 검색',openchat:'커뮤니티 검색'}[view]||'검색';
 }
 function setView(next,{keepSearch=false,openRoom=false}={}){
   if(!navItems.some(n=>n.id===next))return;
@@ -98,9 +112,9 @@ function setView(next,{keepSearch=false,openRoom=false}={}){
   if(!keepSearch){searchQuery='';search.value='';}
   const url=new URL(location.href);url.hash=next;
   if(next==='rooms'&&roomOpen)url.searchParams.set('room',activeRoom);else url.searchParams.delete('room');
-  history.replaceState(null,'',url);render();
+  history.pushState(null,'',url);document.getElementById('search-panel').hidden=true;render();
 }
-function render(){updateNavigation();content.innerHTML={explore:renderExplore,playground:renderPlayground,learn:renderLearn,visit:renderVisit,rooms:renderRooms}[view]();}
+function render(){updateNavigation();content.innerHTML={friends:renderFriends,one:renderOne,openchat:renderOpenchat,more:renderMore,explore:renderExplore,playground:renderPlayground,learn:renderLearn,visit:renderVisit,rooms:renderRooms,studio:renderStudio}[view]();}
 function toggleSearch(open){
   const panel=document.getElementById('search-panel');panel.hidden=!open;
   document.getElementById('search-toggle').setAttribute('aria-expanded',String(open));
@@ -120,7 +134,7 @@ function worldDetails(w){
     <div class="action-grid world-actions">${button(`${icon('play')} 미니게임`,'quest',w.id)}${button(`${icon('plus')} 만들기`,'create',w.id)}${button(`${icon('rooms')} 채팅방`,'world-room',w.id)}</div>
     ${sectionTitle('콘텐츠')}
     ${contentRow(worldQuests[w.id].title,'선택형 게임 · 약 2분','quest',w.id,w.id,'play')}
-    ${contentRow('미나와 한국어','일상 대화 · 기초','go-learn','first','cafe','learn')}
+    ${contentRow('카나나와 한국어','일상 대화 · 기초','go-learn','first','cafe','learn')}
     ${w.id==='solo'?'<a class="list-row content-row" href="https://tapas.io/series/solo-leveling-comic/info" target="_blank" rel="noopener noreferrer"><span class="thumbnail solo">'+icon('book')+'</span><span class="row-copy"><strong>웹툰 원작 보기</strong><p>타파스 · 영어판</p></span><span class="row-side">↗</span></a>':''}
     ${sectionTitle('오픈채팅')}${contentRow(roomData.find(r=>r.id===w.id).title,'체험 채팅 · 3명','world-room',w.id,w.id,'rooms')}`;
 }
@@ -129,7 +143,7 @@ function renderExplore(){
   return `<div class="split-view discovery-view"><section class="list-pane"><div class="tabs" aria-label="콘텐츠 분류">${[['All','전체'],['Stories','웹툰'],['Characters','캐릭터'],['Culture','한국문화']].map(([key,label])=>`<button type="button" class="tab ${worldFilter===key?'active':''}" data-action="world-filter" data-value="${key}" aria-pressed="${worldFilter===key}">${label}</button>`).join('')}</div>
     ${sectionTitle('관심 콘텐츠',filtered.length)}${filtered.length?filtered.map(worldRow).join(''):empty('검색 결과가 없습니다.')}
     <div class="divider"></div>${sectionTitle('바로가기')}<div class="shortcut-grid">${[['playground','play','창작마당'],['learn','learn','한국어'],['visit','visit','한국여행'],['rooms','rooms','채팅']].map(([id,glyph,title])=>`<button type="button" data-view="${id}">${icon(glyph)}<span>${title}</span></button>`).join('')}</div>
-    <div class="divider"></div>${sectionTitle('이어하기')}${contentRow('미나와 한국어','처음 만난 사람에게 인사하기','go-learn','first','cafe','learn')}${contentRow('성수 카페 퀘스트','선택형 게임 · 약 2분','quest','cafe','cafe','coffee')}
+    <div class="divider"></div>${sectionTitle('이어하기')}${contentRow('카나나와 한국어','처음 만난 사람에게 인사하기','go-learn','first','cafe','learn')}${contentRow('성수 카페 퀘스트','선택형 게임 · 약 2분','quest','cafe','cafe','coffee')}
     <div class="mobile-feature"><div class="divider"></div>${sectionTitle('카카오프렌즈')}<button type="button" data-action="world" data-id="friends"><img src="assets/kakao/apeach-splash.png" alt="카카오프렌즈 콘텐츠 보기"></button></div></section>
     <section class="detail-pane">${worldDetails(getWorld(activeWorld))}</section></div>`;
 }
@@ -139,20 +153,13 @@ function allGames(){
 }
 function gameCard(g,own=false){
   const world=getWorld(g.world),format=formats[g.format]||formats.game;
-  return `<article class="content-card"><button type="button" class="card-art ${g.world} ${g.format}" data-action="${own?'open-creation':'sample-game'}" data-id="${esc(g.id)}" aria-label="${esc(g.title)} 열기">${g.world==='friends'?'<img src="assets/kakao/friends.png" alt="">':g.format==='chat'?'<img src="assets/kakao/profile-1.png" alt="">':icon(format.icon)}<span>${format.label}</span></button><div class="card-body"><h3>${esc(g.title)}</h3><p>${esc(world.name)}</p><div class="card-meta"><span>${own?'내 창작물':esc(g.meta)}</span>${button(own?'열기':'시작',''+(own?'open-creation':'sample-game'),g.id)}</div></div></article>`;
-}
-function renderPlayground(){
-  const filtered=allGames().filter(g=>(playFilter==='All'||g.format===playFilter)&&matchText(g.title+' '+getWorld(g.world).name));
-  const own=data.creations.filter(g=>(playFilter==='All'||g.format===playFilter)&&matchText(g.title));
-  return `<div class="view-scroll"><div class="toolbar"><div class="tabs" aria-label="창작물 종류">${[['All','전체'],['game','게임'],['chat','캐릭터 대화'],['story','스토리']].map(([id,title])=>`<button type="button" class="tab ${playFilter===id?'active':''}" data-action="play-filter" data-value="${id}" aria-pressed="${playFilter===id}">${title}</button>`).join('')}</div>${button(`${icon('plus')} 만들기`,'create','','primary')}</div>
-    ${own.length?sectionTitle('내 창작물',own.length)+`<div class="content-grid catalog-grid">${own.map(g=>gameCard(g,true)).join('')}</div>`:''}
-    ${sectionTitle('플레이할 콘텐츠',filtered.length)}<div class="content-grid catalog-grid">${filtered.map(g=>gameCard(g)).join('')}</div>${!filtered.length?empty('검색 결과가 없습니다.'):''}</div>`;
+  return `<article class="content-card"><button type="button" class="card-art ${g.world} ${g.format}" data-action="${own?'open-creation':'sample-game'}" data-id="${esc(g.id)}" aria-label="${esc(g.title)} 열기">${g.world==='solo'?'<div class="solo-art"></div>':g.world==='friends'?'<img src="assets/kakao/friends.png" alt="">':g.format==='chat'?'<img src="assets/kakao/profile-1.png" alt="">':icon(format.icon)}<span>${format.label}</span></button><div class="card-body"><h3>${esc(g.title)}</h3><p>${esc(world.name)}</p><div class="card-meta"><span>${own?'내 창작물':esc(g.meta)}</span>${button(own?'열기':'시작',''+(own?'open-creation':'sample-game'),g.id)}</div></div></article>`;
 }
 function learningMessages(){
   const lesson=lessons[learning.lesson];let html='<div class="system-line"><span>대화 연습</span></div>';
   for(let i=0;i<=learning.step&&i<lesson.steps.length;i++){
     const step=lesson.steps[i];
-    html+=`<div class="chat-line"><img class="avatar" src="assets/kakao/profile-1.png" alt=""><div class="message-content"><span class="message-name">미나</span><div class="bubble">${step.text}</div></div></div>`;
+    html+=`<div class="chat-line"><img class="avatar" src="assets/kakao/apeach-profile.png" alt=""><div class="message-content"><span class="message-name">어피치</span><div class="bubble">${step.text}</div></div></div>`;
     if(learning.replies[i]){
       const reply=learning.replies[i];
       html+=`<div class="chat-line me"><div class="message-content"><div class="bubble">${esc(reply.text)}</div></div></div><div class="learning-feedback ${reply.good?'correct':'gentle'}"><strong>${reply.good?'자연스러운 표현이에요.':'이렇게 말해보세요.'}</strong><p>${step.explanation}</p></div>`;
@@ -164,12 +171,12 @@ function lessonControls(){
   const lesson=lessons[learning.lesson];
   if(learning.step>=lesson.steps.length)return `<div class="lesson-done"><img src="assets/kakao/friends.png" alt=""><h3>연습 완료</h3><div class="button-row">${button('다시 연습','restart-lesson')}${button('채팅방으로','go-rooms','','primary')}</div></div>`;
   const step=lesson.steps[learning.step];
-  return `<div class="reply-prompt">${step.prompt}</div><div class="quick-replies">${step.choices.map((text,i)=>`<button type="button" data-action="lesson-answer" data-index="${i}">${text}</button>`).join('')}</div><form id="practice-form" class="compose-row"><label class="sr-only" for="practice-input">한국어 답장</label><input id="practice-input" name="reply" autocomplete="off" maxlength="180" placeholder="직접 입력하기"><button type="submit" class="button primary">전송</button></form>`;
+  return `<div class="reply-prompt">${step.prompt.replaceAll('미나','어피치')}</div><div class="quick-replies">${step.choices.map((text,i)=>`<button type="button" data-action="lesson-answer" data-index="${i}">${text}</button>`).join('')}</div><form id="practice-form" class="compose-row"><label class="sr-only" for="practice-input">한국어 답장</label><input id="practice-input" name="reply" autocomplete="off" maxlength="180" placeholder="직접 입력하기"><button type="submit" class="button primary">전송</button></form>`;
 }
 function renderLearn(){
-  const lesson=lessons[learning.lesson];
-  return `<div class="split-view chat-view learning-view"><aside class="list-pane">${sectionTitle('대화 연습','기초')}<div class="lesson-tabs">${Object.entries(lessons).filter(([id,l])=>matchText(l.name+' '+l.context)).map(([id,l],i)=>`<button class="list-row ${learning.lesson===id?'active':''}" type="button" data-action="select-lesson" data-id="${id}" aria-pressed="${learning.lesson===id}"><span class="lesson-number">${data.completedLessons.includes(id)?icon('check'):String(i+1).padStart(2,'0')}</span><span class="row-copy"><strong>${l.name}</strong><p>${l.short}</p></span></button>`).join('')}</div><div class="phrase-note">${sectionTitle('오늘의 표현')}<strong>ㄱㄱ</strong><p>친한 사이에서 쓰는 “가자”의 줄임말</p><div class="divider"></div><strong>좋아요. 같이 가요.</strong><p>처음 만난 사람에게 쓰는 정중한 표현</p></div></aside>
-    <section class="conversation ${data.chatTheme==='apeach'?'theme-apeach':''}" aria-label="한국어 대화 연습"><div class="conversation-header"><img class="avatar" src="assets/kakao/profile-1.png" alt="미나"><div><h2>미나 <span class="tiny-badge">연습</span></h2><p>${lesson.name} · ${Math.min(learning.step+1,3)}/3</p></div><button class="icon-button" data-action="toggle-theme" aria-label="채팅 테마 바꾸기">${icon('palette')}</button></div><div class="chat-notice">${lesson.context}</div><div class="messages" id="lesson-messages" aria-live="polite">${learningMessages()}</div><div class="composer">${lessonControls()}</div></section></div>`;
+ const lesson=lessons[learning.lesson];
+ if(!learningOpen){return `<div class="korean-home"><div class="korean-hero"><img src="assets/kakao/apeach-splash.png" alt="카카오 공식 어피치 테마"><div><span>KAKAO FRIENDS</span><h2>어피치와<br>한국어</h2><p>오늘은 어떤 이야기를 할까요?</p></div></div><div class="korean-heading"><h3>대화 연습</h3><span>${data.completedLessons.length} / ${Object.keys(lessons).length} 완료</span></div><div class="korean-lessons">${Object.entries(lessons).filter(([id,l])=>matchText(l.name+' '+l.context)).map(([id,l],i)=>`<button class="korean-lesson" data-action="select-lesson" data-id="${id}"><span class="korean-lesson-art ${id}"><img src="assets/${id==='coffee'?'kiwi/tea.png':id==='first'?'kakao/apeach-profile.png':'kakao/friends.png'}" alt=""></span><span class="korean-lesson-copy"><small>LESSON 0${i+1}</small><strong>${l.name}</strong><span>${l.short}</span></span><span class="korean-lesson-state">${data.completedLessons.includes(id)?icon('check'):icon('start')}</span></button>`).join('')}</div><div class="korean-expression"><img src="assets/kakao/apeach-profile.png" alt="어피치"><div><small>오늘의 표현</small><strong>좋아요. 같이 가요.</strong><span>Sounds good. Let's go together.</span></div></div></div>`;}
+ return `<div class="korean-practice"><div class="practice-heading"><button class="icon-button" data-action="lesson-home" aria-label="학습 목록으로">${icon('back')}</button><img src="assets/kakao/apeach-profile.png" alt="어피치"><div><h2>어피치 · ${lesson.name}</h2><span>대화 연습</span></div><span class="practice-count">${Math.min(learning.step+1,3)} / 3</span></div><div class="practice-progress" aria-label="학습 진행"><span style="width:${learning.step/3*100}%"></span></div><section class="conversation theme-apeach" aria-label="한국어 대화 연습"><div class="messages" id="lesson-messages" aria-live="polite">${learningMessages()}</div><div class="composer"><p class="practice-context">${lesson.context.replaceAll('미나','어피치')}</p>${lessonControls()}</div></section></div>`;
 }
 function answerLesson(text,good){
   const lesson=lessons[learning.lesson];if(learning.step>=lesson.steps.length)return;
@@ -181,20 +188,6 @@ function answerLesson(text,good){
 function renderVisit(){
   const filtered=experiences.filter(e=>matchText(e.name+' '+e.location)&&(visitFilter!=='saved'||data.trip.some(t=>t.experience===e.id)));
   return `<div class="view-scroll"><div class="toolbar"><div class="tabs visit-filters"><button class="tab ${visitFilter==='all'?'active':''}" data-action="visit-filter" data-value="all">전체</button><button class="tab ${visitFilter==='saved'?'active':''}" data-action="visit-filter" data-value="saved">담은 체험</button></div>${button('내 일정','passport')}</div>${sectionTitle('서울 체험',filtered.length)}<div class="content-grid">${filtered.map(e=>`<article class="content-card travel-card"><div class="card-art ${e.art}">${icon(e.id==='cafe-walk'?'coffee':'book')}<span>${e.location}</span></div><div class="card-body"><h3>${e.name}</h3><p>${e.duration}</p><div class="price-line"><strong>${money(e.price)}</strong><span>1인 · 예시 가격</span></div>${button('일정 담기','experience',e.id,'primary')}</div></article>`).join('')}</div>${!filtered.length?empty(visitFilter==='saved'?'담은 체험이 없습니다.':'검색 결과가 없습니다.'):''}<div class="divider"></div>${sectionTitle('여행 한국어')}${contentRow('카페에서 주문하기','아이스 아메리카노 한 잔 주세요.','coffee-lesson','coffee','cafe','learn')}</div>`;
-}
-function roomRow(r){
-  const last=r.messages[r.messages.length-1];
-  return `<button type="button" class="list-row ${activeRoom===r.id?'active':''}" data-action="select-room" data-id="${r.id}">${avatar(r.id)}<span class="row-copy"><strong>${r.title} <em>3</em></strong><p>${last.text}</p></span><span class="row-side"><small>체험</small></span></button>`;
-}
-function roomMessages(){
-  const room=roomData.find(r=>r.id===activeRoom);
-  const messages=room.messages.map((m,i)=>`<div class="chat-line"><img class="avatar" src="assets/kakao/profile-${i%3+1}.png" alt=""><div class="message-content"><span class="message-name">${m.name}</span><div class="bubble">${m.text}</div></div><time class="message-time">오후 2:${String(30+i).padStart(2,'0')}</time></div>`).join('');
-  const own=data.messages.filter(m=>m.room===activeRoom).map(m=>`<div class="chat-line me"><time class="message-time">${new Date(m.at||Date.now()).toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit'})}</time><div class="message-content"><div class="bubble">${esc(m.text)}</div></div></div>`).join('');
-  return `<div class="system-line"><span>체험 대화</span></div>${messages}${own}`;
-}
-function renderRooms(){
-  const room=roomData.find(r=>r.id===activeRoom),joined=data.joinedRooms.includes(activeRoom),filtered=roomData.filter(r=>matchText(r.title+' '+r.description));
-  return `<div class="split-view chat-view room-view ${roomOpen?'room-open':''}"><aside class="list-pane">${sectionTitle('오픈채팅',filtered.length)}${filtered.map(roomRow).join('')}${!filtered.length?empty('채팅방을 찾을 수 없습니다.'):''}</aside><section class="conversation ${data.chatTheme==='apeach'?'theme-apeach':''}" aria-label="${room.title}"><div class="conversation-header"><button class="icon-button back-button" data-action="room-back" aria-label="채팅 목록">${icon('back')}</button>${avatar(room.id)}<div><h2>${room.title}</h2><p>3명 · 체험 채팅</p></div><div class="conversation-actions"><button class="icon-button" data-action="toggle-theme" aria-label="채팅 테마 바꾸기">${icon('palette')}</button><button class="icon-button" data-action="handoff" aria-label="채팅방 초대">${icon('plus')}</button></div></div><button type="button" class="chat-notice pinned-content" data-action="quest" data-id="${room.id}">${icon('play')}<span>${worldQuests[room.id].title}</span>${icon('arrow')}</button><div class="messages" id="room-messages" aria-live="polite">${roomMessages()}</div><div class="composer">${joined?`<form id="room-message-form" class="compose-row"><label class="sr-only" for="room-message">메시지</label><input id="room-message" name="message" autocomplete="off" maxlength="500" placeholder="메시지 입력"><button class="button primary" type="submit">전송</button></form>`:button('참여하기','join-room','','primary full')}</div></section></div>`;
 }
 function openModal(title,body){
   if(!modal.open)lastFocused=document.activeElement;
@@ -217,6 +210,7 @@ function renderStory(){
   const s=scenes[storyStep];openModal('카페에서 만난 편지',`<div class="quest-copy"><span class="step-label">${storyStep+1}/2</span><h3>${s.title}</h3><p>${s.text}</p></div><div class="choice-list">${s.choices.map((x,i)=>`<button class="choice-row" data-action="story-choice"><span class="choice-number">${i+1}</span><strong>${x}</strong>${icon('arrow')}</button>`).join('')}</div>`);
 }
 function openCreator(world='cafe'){
+  if(typeof openStudio==='function'){openStudio(world);return;}
   creator={world:worlds.some(w=>w.id===world)?world:'cafe',format:'game',prompt:'',title:'',preview:false,selected:null};renderCreator();
 }
 function rememberCreator(){const p=document.getElementById('creator-prompt'),w=document.getElementById('creator-world');if(p)creator.prompt=p.value.slice(0,600);if(w)creator.world=w.value;}
@@ -230,6 +224,7 @@ function renderCreator(){
 }
 function openCreation(id){
   const c=data.creations.find(x=>x.id===id);if(!c)return;
+  if(c.items&&typeof studioEdit==='function'){studioEdit(id);return;}
   openModal(esc(c.title),`<div class="preview-box"><span class="tiny-badge">${esc(getWorld(c.world).name)} · ${(formats[c.format]||formats.game).label}</span><p>${esc(c.prompt)}</p></div><div class="button-row">${button('삭제','remove-creation',id,'danger')}${button('실행','run-creation',id,'primary')}</div>`);
 }
 function today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -253,7 +248,7 @@ function openRoomPicker(){openModal('채팅방 찾기',roomData.map(r=>contentRo
 function openSettings(){openModal('설정',`<div class="setting-row"><span>화면 언어</span><strong>한국어</strong></div><div class="setting-row"><span>채팅 테마</span>${button(data.chatTheme==='classic'?'기본':'어피치','settings-theme')}</div><button class="setting-row setting-link" data-action="passport"><span>내 활동</span>${icon('arrow')}</button><details class="preview-info"><summary>미리보기 안내</summary><p>대화와 창작물은 이 기기에 저장됩니다. 한국어 대화와 창작물 제작은 준비된 예시로 동작하며, 실제 메시지 전송·예약은 연결되어 있지 않습니다.</p></details>`);}
 
 document.addEventListener('click',async event=>{
-  const nav=event.target.closest('[data-view]');if(nav){event.preventDefault();setView(nav.dataset.view);return;}
+  const nav=event.target.closest('a[data-view], button[data-view]');if(nav){event.preventDefault();setView(nav.dataset.view);return;}
   const el=event.target.closest('[data-action]');if(!el)return;
   const {action,id,value,index}=el.dataset;
   switch(action){
@@ -271,24 +266,23 @@ document.addEventListener('click',async event=>{
     case 'play-filter':playFilter=value;render();break;
     case 'visit-filter':visitFilter=value;render();break;
     case 'go-learn':learning={lesson:'first',step:0,replies:[]};setView('learn');break;
-    case 'coffee-lesson':learning={lesson:'coffee',step:0,replies:[]};setView('learn');break;
+    case 'coffee-lesson':learningOpen=true;learning={lesson:'coffee',step:0,replies:[]};setView('learn');break;
     case 'go-rooms':activeRoom='cafe';setView('rooms',{openRoom:true});break;
     case 'world-room':activeRoom=roomData.some(r=>r.id===id)?id:'cafe';setView('rooms',{openRoom:true});break;
     case 'select-room':activeRoom=id;setView('rooms',{openRoom:true});break;
     case 'room-back':setView('rooms');break;
-    case 'join-room':if(!data.joinedRooms.includes(activeRoom))data.joinedRooms.push(activeRoom);persist();render();document.getElementById('room-message')?.focus({preventScroll:true});break;
-    case 'select-lesson':if(lessons[id]){learning={lesson:id,step:0,replies:[]};render();}break;
+    case 'select-lesson':if(lessons[id]){learningOpen=true;learning={lesson:id,step:0,replies:[]};render();}break;
     case 'restart-lesson':learning={lesson:learning.lesson,step:0,replies:[]};render();break;
     case 'lesson-answer':{const step=lessons[learning.lesson].steps[learning.step];if(step)answerLesson(step.choices[Number(index)],Number(index)===step.correct);break;}
     case 'quest':startQuest(id||'cafe');break;
     case 'quest-choice':if(quest&&quest.step<3){quest.answers.push(Number(index));quest.step++;renderQuest();}break;
     case 'story-choice':storyStep++;renderStory();break;
-    case 'sample-game':{const g=allGames().find(x=>x.id===id);if(!g)break;if(g.format==='chat'){learning={lesson:'first',step:0,replies:[]};setView('learn');}else if(g.format==='story')startStory();else startQuest(g.world);break;}
+    case 'sample-game':{const g=allGames().find(x=>x.id===id);if(!g)break;if(g.format==='chat'){learningOpen=true;learning={lesson:'first',step:0,replies:[]};setView('learn');}else if(g.format==='story')startStory();else startQuest(g.world);break;}
     case 'create':openCreator(id||activeWorld);break;
     case 'creator-format':rememberCreator();creator.format=id;renderCreator();break;
     case 'build-template':rememberCreator();if(!creator.prompt.trim()){document.getElementById('creator-prompt').focus();toast('만들 내용을 입력해 주세요.');break;}creator.preview=true;creator.title=`${getWorld(creator.world).short} ${formats[creator.format].label}`;renderCreator();break;
     case 'preview-choice':creator.selected=Number(index);document.getElementById('creation-preview-feedback').textContent=creator.format==='chat'?(index==='0'?'좋아요. “오늘 카페 같이 갈까요?”에 답해볼까요?':'오늘은 가까운 카페에서 만나볼까요?'):index==='0'?'새로운 장면이 열렸습니다. 다음 선택을 이어서 만들 수 있어요.':'친구와 함께하는 장면을 선택했습니다.';break;
-    case 'save-creation':{const title=document.getElementById('creation-title').value.trim().slice(0,70);if(!title){toast('제목을 입력해 주세요.');break;}data.creations.unshift({id:'c'+Date.now().toString(36),title,world:creator.world,format:creator.format,prompt:creator.prompt});persist();playFilter='All';setView('playground');toast('내 창작물에 저장했습니다.');break;}
+    case 'save-creation':{const title=document.getElementById('creation-title').value.trim().slice(0,70);if(!title){toast('제목을 입력해 주세요.');break;}data.creations.unshift({id:'c'+Date.now().toString(36),title,world:creator.world,format:creator.format,prompt:creator.prompt});persist();playFilter='All';playgroundTab='mine';setView('playground');toast('내 창작물에 저장했습니다.');break;}
     case 'open-creation':openCreation(id);break;
     case 'run-creation':{const c=data.creations.find(x=>x.id===id);if(!c)break;if(c.format==='chat'){learning={lesson:'first',step:0,replies:[]};setView('learn');}else if(c.format==='story')startStory();else startQuest(c.world);break;}
     case 'remove-creation':data.creations=data.creations.filter(c=>c.id!==id);persist();setView('playground');toast('삭제했습니다.');break;
@@ -301,7 +295,7 @@ document.addEventListener('click',async event=>{
 });
 document.addEventListener('submit',event=>{
   if(event.target.id==='practice-form'){event.preventDefault();const input=document.getElementById('practice-input');const text=input.value.trim();if(text)answerLesson(text.slice(0,180));return;}
-  if(event.target.id==='room-message-form'){event.preventDefault();const input=document.getElementById('room-message');const text=input.value.trim();if(!text)return;data.messages.push({room:activeRoom,text:text.slice(0,500),at:Date.now()});persist();input.value='';const messages=document.getElementById('room-messages');messages.innerHTML=roomMessages();messages.scrollTop=messages.scrollHeight;input.focus();return;}
+  if(event.target.id==='room-message-form'){event.preventDefault();const input=document.getElementById('room-message');const text=input.value.trim();if(!text)return;data.messages.push({room:activeRoom,text:text.slice(0,500),at:Date.now()});persist();input.value='';const messages=document.getElementById('room-messages');messages.innerHTML=roomMessages();messages.scrollTop=messages.scrollHeight;updateRoomInput();input.focus();return;}
   if(event.target.id==='trip-form'){
     event.preventDefault();const date=document.getElementById('trip-date').value,people=Number(document.getElementById('trip-people').value),exp=experiences.find(e=>e.id===event.target.dataset.id);
     if(!exp||!date||date<today()||!Number.isInteger(people)||people<1||people>5){toast('날짜와 인원을 확인해 주세요.');return;}
@@ -320,4 +314,28 @@ window.addEventListener('hashchange',()=>{const next=location.hash.slice(1);if(n
 document.getElementById('search-toggle').innerHTML=icon('search');
 document.getElementById('header-create').innerHTML=icon('plus');
 document.getElementById('settings-button').innerHTML=icon('settings');
-render();
+function renderMore(){return `<div class="view-scroll"><div class="more-profile"><img class="avatar" src="assets/kakao/profile-1.png" alt=""><h2>Alex Morgan</h2></div><button class="list-row" data-view="one">${icon('one')}<span class="row-copy"><strong>Playground</strong><p>창작마당과 한국어 학습</p></span>${icon('arrow')}</button><button class="list-row" data-action="passport">${icon('bookmark')}<strong>내 활동</strong></button><button class="list-row" data-action="settings">${icon('settings')}<strong>설정</strong></button></div>`;}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-action]');if(!el)return;const {action,id}=el.dataset;
+ if(action==='squid-room'){community='squid';channel='general';communityOpen=true;setView('openchat');}
+ if(action==='squid-members')squidMemberList();
+ if(action==='squid-start'){squidStage=0;renderSquidGame();}
+ if(action==='squid-move'||action==='squid-stop'){const correct=(squidStage%2===0&&action==='squid-move')||(squidStage%2===1&&action==='squid-stop');if(correct){squidStage++;renderSquidGame();}else{toast('불빛을 확인하고 다시 선택해 주세요.');}}
+ if(action==='squid-finish'){closeModal();channel='general';render();}
+ if(action==='lesson-home'){learningOpen=false;render();}
+ if(action==='hub-category'){hubCategory=id;render();}
+ if(action==='friend-tab'){friendTab=id;render();}
+ if(action==='like-post'){liked=!liked;render();}
+ if(action==='friend-profile')openModal(esc(id),'<p>친구 프로필</p>'+button('채팅 보기','go-rooms','','primary'));
+ if(action==='post-menu')openModal('게시물', '<p>박서준님의 프로필 업데이트입니다.</p>');
+ if(action==='post-comment')openModal('댓글', '<p>친구와 채팅으로 이야기를 나눠보세요.</p>'+button('채팅으로 이동','go-rooms','','primary'));
+ if(action==='openchat-search'){toggleSearch(true);}
+ if(action==='openchat-tab'){openchatTab=id;render();}
+ if(action==='community'){community=id;channel='general';communityOpen=true;render();}
+ if(action==='community-back'){communityOpen=false;render();}
+ if(action==='channel'){channel=id;render();}
+ if(action==='add-channel')openModal('채널 만들기','<form id="new-channel-form"><label class="field-label" for="channel-name">채널 이름</label><input class="field-input" id="channel-name" name="name" maxlength="20" placeholder="예: 게임 공략" required><p class="small-note">라운지에 새 텍스트 채널을 만듭니다.</p><button class="button primary full" type="submit">채널 만들기</button></form>');
+});
+document.addEventListener('submit',e=>{
+ if(e.target.id==='channel-form'){e.preventDefault();const input=e.target.elements.message,text=input.value.trim();if(!text)return;channelData[community].messages.push({channel,text,at:Date.now()});saveChannels();render();document.getElementById('channel-messages').scrollTop=1e9;document.getElementById('channel-input').focus();}
+ if(e.target.id==='new-channel-form'){e.preventDefault();const name=e.target.elements.name.value.trim();if(!name)return;if(channelData[community].channels.some(c=>c.name===name)){toast('같은 이름의 채널이 있습니다.');return;}channel='c'+Date.now();channelData[community].channels.push({id:channel,name,category:'라운지'});saveChannels();closeModal();render();}
+});

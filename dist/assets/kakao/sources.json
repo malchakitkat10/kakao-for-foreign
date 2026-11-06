@@ -168,5 +168,45 @@
       640,
       640
     ]
+  },
+  {
+    "file": "icon-friends-idle.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_off_friends.svg",
+    "sha256": "22803ad39469ba99714f974f6fafefe8f0d556fc31d4d27eac2be5fd2cdc831d"
+  },
+  {
+    "file": "icon-chat-idle.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_off_chat.svg",
+    "sha256": "60f2b436d71899e397b207784e6ff2870561b25877111a10d1b7d72ad34d3da7"
+  },
+  {
+    "file": "icon-more-idle.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_off_more.svg",
+    "sha256": "a7ee728dc1c8d93213d9bc50b54e34be05fa43a1a298bb3b7223c68fe83b4d68"
+  },
+  {
+    "file": "icon-more-selected.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_on_more_selected.svg",
+    "sha256": "0fbf815f1aaca83d66816af5f1f883e4f8441a647997d32d7ac4e7ce6c5d12a1"
+  },
+  {
+    "file": "icon-settings.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_off_setting.svg",
+    "sha256": "36bc419b110ed1ac1a97edb4bb436327835ab5a1d982926d5d3f8440373fa9c9"
+  },
+  {
+    "file": "icon-add-chat.svg",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_off_addchat.svg",
+    "sha256": "212027b1e8c908dbfd7e1ab3c685baf660a6c69b6f0b2291c5b8cb5215412c80"
+  },
+  {
+    "file": "icon-search.svg",
+    "source": "kakaotalk-mac-reference/chat-header/chatroom_header_btn_search_default.svg",
+    "sha256": "8d0456c328d673c1ec0ab7caa5a5aed6d5fa4f355aa0ef4c4758b31e40f3393b"
+  },
+  {
+    "file": "icon-settings.png",
+    "source": "kakaotalk-mac-reference/sidebar/main_btn_off_setting@2x.png",
+    "sha256": "66c704fefb93c6d5a85810046edb9638418f0f7c95dd0649187ae97e87596f9c"
   }
 ]

@@ -1,0 +1,61 @@
+/* Home restored to the user's supplied four-app / two-banner reference. */
+body[data-view=one] .app-header{border-bottom:1px solid #eee}
+body[data-view=one] .app-header h1{gap:7px;font-size:25px;color:#414141}
+body[data-view=one] .one-word{margin-left:0}
+body[data-view=one] #hub-menu-button{display:flex}
+body[data-view=one] #hub-menu-button .asset-icon{width:24px;height:24px}
+.one-dashboard .hub-app-grid{padding-top:16px;padding-bottom:26px}
+.one-service-menu{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+.one-service-link{display:flex;align-items:center;gap:10px;min-width:0;min-height:66px;border-bottom:1px solid #eee;font-size:12px}
+.one-service-logo{display:block;width:36px;height:36px;flex:none}.one-service-logo img{width:100%;height:100%;object-fit:contain;border-radius:5px}
+.one-service-link>small{margin-left:auto;color:#999}
+.one-menu-account{display:flex;gap:25px;margin-top:20px}.one-menu-account button{padding:5px 0;color:#777;background:none;font-size:12px}
+/* The restored white home now groups its banners in one swipeable hero. */
+.one-hero-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:20px;overscroll-behavior-x:contain}
+.one-hero-track::-webkit-scrollbar{display:none}
+.one-hero-slide{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always}
+.one-hero-slide .hub-feature,.one-hero-slide .squid-banner{height:232px;margin:0;border-radius:20px}
+.one-carousel-controls{display:flex;align-items:center;justify-content:flex-end;gap:8px;height:30px}
+.one-carousel-pages{display:flex;align-items:center;margin-right:auto;gap:0}
+.one-carousel-pages button{position:relative;width:20px;height:28px;padding:0;background:none}
+.one-carousel-pages button:after{content:'';position:absolute;top:11px;left:7px;width:6px;height:6px;border-radius:50%;background:#d6d6d6}
+.one-carousel-pages button[aria-pressed=true]:after{background:#282828}
+.one-slide-count{font-size:10px;color:#888;min-width:31px}
+.one-carousel-controls>button{background:none;color:#555;font-size:22px;line-height:25px;width:25px;height:28px;padding:0}
+.one-ranking{height:232px;padding:14px 15px;background:#171717;border-radius:20px;color:white;overflow:hidden}
+.one-ranking-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.one-ranking-heading h2{font-size:19px;font-weight:800;letter-spacing:-.5px}.one-ranking-heading span{color:#aaa;font-size:9px}
+.one-ranking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.one-ranking-grid button{padding:0;background:none;min-width:0;color:white;text-align:left;border-radius:0}
+.one-ranking-cover{display:block;height:144px;position:relative}
+.one-ranking-cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:3px}
+.one-ranking-cover b{position:absolute;left:3px;bottom:-6px;font-size:42px;font-weight:850;line-height:1;color:#171717;-webkit-text-stroke:1px #fff;text-shadow:0 2px 4px #0008}
+.one-ranking-grid strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;font-weight:500;margin-top:10px}
+.one-playground-picks{margin-top:15px}
+.one-playground-picks .hub-section-title{margin-bottom:11px}
+.one-playground-picks .hub-section-title>button{padding:3px 0;font-size:11px;color:#888;background:none}
+.one-artist-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.one-story-picks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:19px}
+.one-preview-link{display:block;padding:0;background:none;border-radius:0;min-width:0;text-align:left;color:inherit}
+.one-carousel button:focus-visible,.one-preview-link:focus-visible,.one-hero-track:focus-visible{outline:2px solid #2877e5;outline-offset:2px}
+@media(max-width:360px){.one-ranking{padding-left:12px;padding-right:12px}.one-ranking-grid{gap:7px}.one-ranking-cover{height:140px}}
+
+body[data-view=one] .app-header h1{font-size:26px;letter-spacing:-1px}
+.one-dashboard{padding-top:14px}
+.one-ranking-heading h2{font-size:18px}
+.one-ranking-cover{height:128px}
+.one-ranking-grid strong{font-size:11px;margin-top:9px}
+.one-ranking-grid small{display:block;color:#aaa;font-size:9px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.one-hero-slide .squid-banner-title{font-size:29px}
+.one-hero-slide .squid-banner-title>span{font-size:10px;letter-spacing:0;font-weight:400;margin-top:8px}
+@media(max-width:360px){.one-ranking-cover{height:128px}.one-ranking-heading h2{font-size:16px}.one-hero-slide .squid-banner-title{font-size:26px}}
+
+/* One ranked game per hero slide; numbers are the only banner labels. */
+.ranked-hero-art{position:absolute;inset:0;overflow:hidden}
+.ranked-hero-art>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 35%}
+.ranked-hero-art.solo{background:url('assets/official/solo-leveling.jpg') right 0 top 15% / 160% auto no-repeat}
+.ranked-hero-art.solo>img{opacity:0}
+.hero-rank{position:absolute;top:14px;left:20px;font-size:56px;line-height:1;font-weight:850;color:white;letter-spacing:-3px;text-shadow:0 2px 12px #0006}
+.ranked-hero .hub-feature-copy h2{font-size:29px;margin-bottom:13px;line-height:1.2}
+.ranked-hero .hub-feature-copy{bottom:20px}
+@media(max-width:360px){.ranked-hero .hub-feature-copy h2{font-size:26px}}

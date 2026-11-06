@@ -1,0 +1,12 @@
+/* Icon-only correction. The native 36px canvases include optical padding.
+   Preserve the mobile layout; do not import the Mac sidebar or its layout. */
+.bottom-nav .nav-link .native-nav-icon,
+body[data-view=friends] .bottom-nav .nav-link .native-nav-icon {
+  width:36px;height:36px;margin:-6px;opacity:1;filter:none;
+}
+#desktop-nav .nav-link .native-nav-icon {width:36px;height:36px;margin:-6px;opacity:1;filter:none}
+#settings-button > .asset-icon,
+#header-create > .asset-icon[src$="icon-add-chat.svg"] {width:36px;height:36px;max-width:none;flex:none}
+
+.header-actions .asset-icon[src$="icon-search.png"] {width:36px;height:36px;max-width:none;flex:none}
+#settings-button > .asset-icon {width:40px;height:40px}

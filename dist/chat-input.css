@@ -1,0 +1,16 @@
+/* Supplied Katok UI message-input.tsx: original measurements and light tokens. */
+body[data-view=rooms] .source-room-composer{flex:none;width:100%;padding:6px 10px max(8px,env(safe-area-inset-bottom));background:transparent}
+body[data-view=rooms] .source-input-bar{display:flex;align-items:flex-end;gap:6px;min-height:48px;width:100%;padding:7px;border:1px solid #ffffff80;border-radius:24px;background:#d8e7ef;box-shadow:0 2px 12px #00000014;backdrop-filter:blur(24px)}
+body[data-view=rooms] .source-input-circle{display:flex;align-items:center;justify-content:center;flex:none;width:32px;height:32px;padding:0;border:0;border-radius:50%;background:#fff;color:#191919}
+body[data-view=rooms] .source-input-circle img{width:18px;height:18px}
+body[data-view=rooms] .source-input-circle[data-action=room-attach] img{width:20px;height:20px}
+body[data-view=rooms] .source-input-bar textarea{flex:1;min-width:0;min-height:32px;max-height:112px;height:32px;resize:none;padding:6px 4px;background:transparent;border:0;border-radius:0;font-size:16px;line-height:20px;color:#191919;outline:none;box-shadow:none}
+body[data-view=rooms] .source-input-bar textarea::placeholder{color:#8c9599}
+body[data-view=rooms] .source-input-emoji{width:24px;height:24px;margin:4px 0;background:#0000001a}
+body[data-view=rooms] .source-input-send{background:#fee500}
+body[data-view=rooms] .source-input-circle:focus-visible{outline:2px solid #fee500;outline-offset:2px}
+body[data-view=rooms] .source-input-bar:focus-within{border-color:#ffffffb3}
+body[data-view=rooms] .room-inline-search{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px;background:white;border-radius:12px;margin-bottom:8px;font-size:12px}
+.room-inline-search input{min-width:0;flex:1;padding:6px;border:1px solid #ddd;border-radius:5px}.room-inline-search button{background:transparent}.room-search-match .bubble{outline:2px solid #ffb300}
+.room-message-photo{display:block;max-width:100%;max-height:260px;border-radius:4px;object-fit:contain}
+.room-emoji-options{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.room-emoji-options button{font-size:30px;padding:12px;background:transparent;border-radius:8px}.room-emoji-options button:hover{background:#f5f5f5}

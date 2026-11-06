@@ -5,17 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="카카오 콘텐츠, 창작마당, 한국어 학습과 채팅을 한곳에서.">
-  <title>카카오월드</title>
+  <title>Playground</title>
   <link rel="icon" type="image/png" href="assets/kakao/talk-icon.png">
   <link rel="stylesheet" href="talk-app.css">
+  <link rel="stylesheet" href="reference-design.css">
+  <link rel="stylesheet" href="openchat-entry.css">
+  <link rel="stylesheet" href="native-icons.css">
   <script src="data.js" defer></script>
+  <script src="features/kanana-data.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="features/friends.js" defer></script>
+  <script src="features/chats.js" defer></script>
+  <script src="features/chat-input.js" defer></script>
+  <script src="features/openchat.js" defer></script>
+  <script src="features/one.js" defer></script>
+  <script src="features/playground.js" defer></script>
+  <script src="features/kanana-chat.js" defer></script>
+  <script src="features/studio.js" defer></script>
+  <script src="features/newcomer.js" defer></script>
+  <script src="bootstrap.js" defer></script>
+  <link rel="stylesheet" href="kiwi-chat.css">
+  <link rel="stylesheet" href="chat-banner.css">
+  <link rel="stylesheet" href="chat-input.css">
+  <link rel="stylesheet" href="playground.css">
+  <link rel="stylesheet" href="one-editorial.css">
+  <link rel="stylesheet" href="studio.css">
+  <link rel="stylesheet" href="kanana-chat.css">
+  <link rel="stylesheet" href="newcomer.css">
 </head>
 <body>
   <a class="skip-link" href="#content">본문으로 이동</a>
   <div class="app-window">
     <aside class="app-rail" aria-label="주 메뉴">
-      <a class="rail-brand" href="#explore" aria-label="카카오월드 홈"><img src="assets/kakao/talk-icon.png" alt=""></a>
+      <a class="rail-brand" href="#friends" aria-label="Playground"><img src="assets/kakao/talk-icon.png" alt=""></a>
       <nav id="desktop-nav"></nav>
       <button class="rail-profile" type="button" data-action="passport" aria-label="내 활동"><img src="assets/kakao/apeach-profile.png" alt=""></button>
     </aside>
@@ -25,6 +47,7 @@
         <div class="header-actions">
           <button class="icon-button" type="button" data-action="toggle-search" aria-label="검색" aria-expanded="false" aria-controls="search-panel" id="search-toggle"></button>
           <button class="icon-button" type="button" data-action="header-create" aria-label="콘텐츠 만들기" id="header-create"></button>
+          <button class="icon-button" type="button" data-action="hub-menu" aria-label="Playground 메뉴" aria-haspopup="dialog" id="hub-menu-button" hidden><img class="icon asset-icon" src="assets/kakao/icon-more-selected.svg" alt=""></button>
           <button class="icon-button" type="button" data-action="settings" aria-label="설정" id="settings-button"></button>
         </div>
       </header>

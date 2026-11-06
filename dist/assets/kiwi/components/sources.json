@@ -1,0 +1,166 @@
+{
+  "source": "KiwiTalk Renewal.fig",
+  "components": [
+    {
+      "file": "send.svg",
+      "node": "734:7540",
+      "name": "Vector",
+      "size": {
+        "x": 16.218826293945312,
+        "y": 17.75734519958496
+      },
+      "color": "#618ee7"
+    },
+    {
+      "file": "menu.svg",
+      "node": "734:7575",
+      "name": "Vector",
+      "size": {
+        "x": 13.5,
+        "y": 12
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "bubble-in.svg",
+      "node": "14:173",
+      "name": "Message",
+      "size": {
+        "x": 356,
+        "y": 114
+      },
+      "color": "#1f2634"
+    },
+    {
+      "file": "bubble-out.svg",
+      "node": "33:4310",
+      "name": "Message",
+      "size": {
+        "x": 356,
+        "y": 114
+      },
+      "color": "#226cff"
+    },
+    {
+      "file": "bubble-tail.svg",
+      "node": "31:1057",
+      "name": "Tail",
+      "size": {
+        "x": 18,
+        "y": 18
+      },
+      "color": "#1f2634"
+    },
+    {
+      "file": "profile-mark.svg",
+      "node": "5:1317",
+      "name": "Vector (Stroke)",
+      "size": {
+        "x": 25.371030807495117,
+        "y": 26.91428565979004
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "profile-mask.svg",
+      "node": "5:1315",
+      "name": "Mask",
+      "size": {
+        "x": 54,
+        "y": 54.00000762939453
+      },
+      "color": "#c4c4c4"
+    },
+    {
+      "file": "search-line.svg",
+      "node": "3:467",
+      "name": "Vector",
+      "size": {
+        "x": 15.235275268554688,
+        "y": 15.235275268554688
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "search-line.svg",
+      "node": "12:1360",
+      "name": "Vector",
+      "size": {
+        "x": 15.235275268554688,
+        "y": 15.235275268554688
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "add-line.svg",
+      "node": "30:2178",
+      "name": "Vector",
+      "size": {
+        "x": 14,
+        "y": 14
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "search-line.svg",
+      "node": "30:2215",
+      "name": "Vector",
+      "size": {
+        "x": 15.235275268554688,
+        "y": 15.235275268554688
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "search-line.svg",
+      "node": "30:2601",
+      "name": "Vector",
+      "size": {
+        "x": 15.235275268554688,
+        "y": 15.235275268554688
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "search-line.svg",
+      "node": "37:455",
+      "name": "Vector",
+      "size": {
+        "x": 15.235275268554688,
+        "y": 15.235275268554688
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "back.svg",
+      "node": "734:7654",
+      "name": "Vector",
+      "size": {
+        "x": 5.8336501121521,
+        "y": 9.54590892791748
+      },
+      "color": "#ffffff"
+    },
+    {
+      "file": "notice.svg",
+      "node": "734:7578",
+      "name": "Vector",
+      "size": {
+        "x": 19.5,
+        "y": 19
+      },
+      "color": "#226cff"
+    }
+  ],
+  "chatFrame": "734:7526",
+  "background": "#1c1c22",
+  "inputRadius": 18,
+  "inputHeight": 44,
+  "fontSize": 14,
+  "lineHeight": 18,
+  "bubbleRadius": 20,
+  "bubblePadding": [
+    12,
+    18
+  ]
+}

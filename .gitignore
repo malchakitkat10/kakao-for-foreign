@@ -4,3 +4,7 @@
 !.env.example
 node_modules/
 work/
+
+# Generated standalone exports; edit the source in dist/ instead.
+/outputs/
+/dist/exports/
