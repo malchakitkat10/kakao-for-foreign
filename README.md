@@ -2,6 +2,8 @@
 
 카카오톡 네 번째 탭에서 들어가는 해커톤용 Playground 프로토타입입니다. 팬메이드 게임 홈, 창작마당, 에셋 팩과 제작 도구, 오픈채팅 및 카나나 한국어 학습 화면을 포함합니다.
 
+**[팀 공유용 웹사이트](https://kakao-world-concept-1106.yeonbagpt001.chatgpt.site)** · **[Playground 홈 바로가기](https://kakao-world-concept-1106.yeonbagpt001.chatgpt.site/#one)**
+
 ## GitHub에서 수정
 
 이 저장소의 `main`을 기준으로 작업합니다.
